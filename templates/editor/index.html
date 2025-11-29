@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Photo Editor - Modern UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin:0; padding:0; font-family: 'Inter', sans-serif; }
+  body { background: #f5f5f7; color: #333; display: flex; justify-content: center; padding: 30px; }
+  .container { display: flex; gap: 30px; max-width: 1400px; width: 100%; }
+
+  /* Left Panel */
+  .left { flex: 1; background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+  .left h1 { margin-bottom: 20px; font-weight: 600; font-size: 24px; color: #111; }
+  #fileInput { width: 100%; margin-bottom: 15px; }
+  /* Set a maximum display size for the canvas but let JS handle internal resolution */
+  canvas { max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+
+  .controls { display: flex; gap: 15px; flex-wrap: wrap; }
+  .controls label { display: flex; flex-direction: column; font-size: 14px; color: #555; }
+  .controls input[type="range"] { margin-top: 5px; width: 150px; }
+  .controls button {
+    background: #4caf50;
+    border: none;
+    padding: 8px 16px;
+    color: #fff;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    min-width: 100px; /* Added min-width for consistent button size */
+  }
+  .controls button:hover { background: #45a048; }
+
+  /* Right Panel */
+  .right { flex: 1; background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+  .right h3 { margin-bottom: 15px; font-size: 18px; color: #111; font-weight: 600; }
+  .presets { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .preset, .server {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background: #f0f0f0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+  }
+  .preset.active, .server.active {
+    background: #4caf50;
+    color: white;
+    border-color: #4caf50;
+  }
+#canvas {
+  /* Set relative positioning so we can place the overlay correctly */
+  position: relative;
+  cursor: auto; /* Default cursor */
+}
+.selection {
+  position: absolute;
+  /* Use fixed positioning for the overlay since we are using clientX/Y */
+  position: fixed;
+  border: 2px dashed #4caf50;
+  pointer-events: none; /* Allows mouse events to pass through to the canvas */
+  z-index: 10;
+}
+
+  #resultImg { width: 100%; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="left">
+    <h1>Photo Editor</h1>
+    <input id="fileInput" type="file" accept="image/*">
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <div class="controls">
+      <label>Brightness
+        <input id="brightness" type="range" min="-100" max="100" value="0">
+      </label>
+      <label>Contrast
+        <input id="contrast" type="range" min="-100" max="100" value="0">
+      </label>
+      <button id="grayscale">Grayscale</button>
+      <button id="reset">Reset</button>
+      <button id="crop">Reset</button>
+    </div>
+  </div>
+
+  <div class="right">
+    <h3>Presets & Filters</h3>
+    <div class="presets">
+      <button data-preset="bright" class="preset">Bright</button>
+      <button data-preset="high-contrast" class="preset">High Contrast</button>
+      <button data-filter="sharpen" class="server">Sharpen</button>
+      <button data-filter="hdr" class="server">HDR</button>
+      <button data-filter="blur" class="server">Blur</button>
+      <button data-filter="sepia" class="server">SEPIA</button>
+      <button data-filter="fullhd" class="server">Full HD</button>
+      <button data-filter="oil" class="server">Oil Painting</button>
+      <button data-filter="greyhd" class="server">Grey HD</button>
+      <button id="sepia" class="preset">Sepia</button>
+      <button id="fade" class="preset">Fade</button>
+      <button id="grey2" class="preset">Grey</button>
+       <button data-filter="frame1" class="server">Add Frame 1</button>
+       <button data-filter="frame2" class="server">Add Frame 2</button>
+
+    </div>
+    <h3>Result</h3>
+    <img id="resultImg" />
+  </div>
+</div>
+
+<script src="/static/editor/main.js"></script>
+</body>
+</html>

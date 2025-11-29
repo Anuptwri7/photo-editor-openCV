@@ -1,0 +1,4 @@
+Django>=4.2
+pillow
+opencv-python-headless
+django-cors-headers
